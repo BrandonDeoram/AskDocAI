@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth, UserButton } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 interface NavItem {
   label: string;
   link: string;
@@ -20,10 +21,16 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const DynamicUserButton = dynamic(
+    () => import("@clerk/nextjs").then((mod) => mod.UserButton),
+    {
+      ssr: false, // Set ssr to false to ensure client-side rendering
+    }
+  );
 
   return (
     <nav
-      className={`dark bg-background overflow-hidden items-center${
+      className={`dark bg-transparent overflow-hidden items-center${
         isOpen ? "h-auto" : "h-16"
       } p-4`}
     >
@@ -61,16 +68,16 @@ const Navbar: React.FC = () => {
         >
           {isAuth ? (
             <>
-              <li>
+              <li key="pricingkey123">
                 <a
-                  href={"/pricing"}
-                  className={`text-white ${"hover:opacity-50 transition ease-linear"}`}
+                  href="/pricing"
+                  className="text-white hover:opacity-50 transition ease-linear"
                 >
                   Pricing
                 </a>
               </li>
-              <li>
-                <UserButton afterSignOutUrl="/"></UserButton>
+              <li key="clerk">
+                <DynamicUserButton afterSignOutUrl="/" />
               </li>
             </>
           ) : (
@@ -79,8 +86,8 @@ const Navbar: React.FC = () => {
                 <a
                   href={item.link}
                   className={`text-white ${
-                    index == navItems.length - 1
-                      ? "sm:bg-background p-2 rounded-lg hover:opacity-50 hover:text-white transition ease-linear font-medium"
+                    index === navItems.length - 1
+                      ? " p-2 rounded-lg hover:opacity-50 hover:text-white transition ease-linear font-medium"
                       : "hover:opacity-50 transition ease-linear"
                   }`}
                 >

@@ -3,21 +3,19 @@ import Wrap from "../components/wrap";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { UserButton, auth } from "@clerk/nextjs";
-import FileUpload from "@/components/FileUpload";
+import Dashboard from "@/components/Dashboard";
+import { Toaster } from "react-hot-toast";
 export default async function Home() {
-  const { userId } = await auth();
+  const { userId } = auth();
   const isAuth = !!userId;
 
   return (
     <>
       <Navbar />
       <Wrap>
+        <Toaster position="top-center" />
         {isAuth ? (
-          <div className="mx-auto w-full mt-3" >
-            <div className="flex flex-col justify-center items-center h-[50rem] max-w-full">
-              <FileUpload></FileUpload>
-            </div>
-          </div>
+          <Dashboard></Dashboard>
         ) : (
           <>
             <div className="grid grid-rows-2 row-span-1 lg:grid-rows-4 gap-10 sm:mt-20 mt-8 h-full md:grid-rows-1">
@@ -49,7 +47,7 @@ export default async function Home() {
             <div className="flex flex-col mt-4 sm:flex-nowrap rounded-xl m-6 mx-auto w-full justify-center ">
               <div className="p-5 flex mx-auto">
                 <div>
-                  <div className="w-10 h-10 bg-background outline-dotted outline-white rounded-full flex items-center justify-center text-white ">
+                  <div className="w-10 h-10 bg-background outline-none outline-white rounded-full flex items-center justify-center text-white ">
                     1
                   </div>
                 </div>
@@ -67,7 +65,7 @@ export default async function Home() {
             <div className="flex flex-col mt-4 sm:flex-nowrap rounded-xl m-6 mx-auto w-full justify-center ">
               <div className="p-5 flex mx-auto">
                 <div>
-                  <div className="w-10 h-10 bg-background outline-dotted outline-white rounded-full flex items-center justify-center text-white ">
+                  <div className="w-10 h-10 bg-background outline-none outline-white rounded-full flex items-center justify-center text-white ">
                     2
                   </div>
                 </div>

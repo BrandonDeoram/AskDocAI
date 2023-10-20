@@ -1,13 +1,12 @@
 "use client";
-// import { uploadToS3 } from "@/lib/s3";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import {toast} from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { uploadToS3 } from "@/lib/db/s3";
-
+import { Inbox, Loader2 } from "lucide-react";
 // https://github.com/aws/aws-sdk-js-v3/issues/4126
 
 const FileUpload = () => {
@@ -39,6 +38,7 @@ const FileUpload = () => {
         toast.error("File too large");
         return;
       }
+
       try {
         setUploading(true);
         const data = await uploadToS3(file);
@@ -48,9 +48,9 @@ const FileUpload = () => {
           return;
         }
         mutate(data, {
-          onSuccess: ([chat_id]) => {
+          onSuccess: ({ chat_id }) => {
             toast.success("Chat created!");
-            router.push(`/chat/${chat_id}`);
+            // router.push(`/chat/${chat_id}`);
           },
           onError: (err) => {
             toast.error("Error creating chat");
@@ -73,14 +73,16 @@ const FileUpload = () => {
         })}
       >
         <input {...getInputProps()} />
-        {uploading || true ? (
+        {uploading || isLoading ? (
           <>
+            <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
             <p className="mt-2 text-sm text-slate-400">
               Spilling Tea to GPT...
             </p>
           </>
         ) : (
           <>
+            <Inbox className="w-10 h-10 text-blue-500" />
             <p className="mt-2 text-sm text-slate-400">Drop PDF Here</p>
           </>
         )}
