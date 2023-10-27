@@ -10,8 +10,9 @@ import {
 
 export const userSystemEnum = pgEnum("user_system_enum", ["system", "user"]);
 
+
 export const chats = pgTable("chats", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey(),
   pdfName: text("pdf_name").notNull(),
   pdfUrl: text("pdf_url").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -22,8 +23,8 @@ export const chats = pgTable("chats", {
 export type DrizzleChat = typeof chats.$inferSelect;
 
 export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
-  chatId: integer("chat_id")
+  id: text("id").primaryKey(),
+  chatId: text("chat_id")
     .references(() => chats.id)
     .notNull(),
   content: text("content").notNull(),
@@ -32,7 +33,7 @@ export const messages = pgTable("messages", {
 });
 
 export const userSubscriptions = pgTable("user_subscriptions", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey(),
   userId: varchar("user_id", { length: 256 }).notNull().unique(),
   stripeCustomerId: varchar("stripe_customer_id", { length: 256 })
     .notNull()

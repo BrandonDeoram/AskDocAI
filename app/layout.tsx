@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "@/components/Providers";
+import Navbar from "@/components/navbar";
+import 'react-toastify/dist/ReactToastify.css';
+import { CounterProvider } from "@/components/CounterProvider";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,12 +23,15 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <Providers>
-        <html lang="en">
-          <body className="min-h-screen font-sans dark bg-gradient-to-r from-background to-slate-700">
-            {children}
-            {/* <Toaster position="top-center" /> */}
-          </body>
-        </html>
+        <CounterProvider>
+          <html lang="en">
+            <body className="min-h-screen font-sans dark bg-gradient-to-tr from-background to-slate-900">
+              <Navbar />
+              {children}
+              <Toaster position="top-center"/>
+            </body>
+          </html>
+        </CounterProvider>
       </Providers>
     </ClerkProvider>
   );

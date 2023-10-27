@@ -1,19 +1,18 @@
-import Navbar from "../components/navbar";
 import Wrap from "../components/wrap";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { UserButton, auth } from "@clerk/nextjs";
 import Dashboard from "@/components/Dashboard";
 import { Toaster } from "react-hot-toast";
+
 export default async function Home() {
   const { userId } = auth();
   const isAuth = !!userId;
 
   return (
     <>
-      <Navbar />
+      <Toaster position="top-center" />
       <Wrap>
-        <Toaster position="top-center" />
         {isAuth ? (
           <Dashboard></Dashboard>
         ) : (

@@ -3,27 +3,42 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { uploadToS3 } from "@/lib/db/s3";
 import { Inbox, Loader2 } from "lucide-react";
+import { useCounter } from "./CounterProvider";
+import { v4 as uuidv4 } from "uuid";
 // https://github.com/aws/aws-sdk-js-v3/issues/4126
+function generateChatId() {
+  // Generate a random UUID (Universally Unique Identifier)
+  const uuid = uuidv4();
+  return uuid.slice(0, 5);
+}
 
 const FileUpload = () => {
   const router = useRouter();
+  const { counter, incrementCounter } = useCounter();
   const [uploading, setUploading] = React.useState(false);
   const { mutate, isLoading } = useMutation({
     mutationFn: async ({
       file_key,
       file_name,
+      chatId,
     }: {
       file_key: string;
       file_name: string;
+      chatId: string; // Ensure chatId is specified as a string
     }) => {
+      // Convert chatId to a string if it's not already
+      const chatIdAsString = chatId.toString();
+
       const response = await axios.post("/api/create-chat", {
         file_key,
         file_name,
+        chatId: chatIdAsString, // Pass chatId as a string
       });
+      console.log("logging returned data", response.data);
       return response.data;
     },
   });
@@ -41,16 +56,25 @@ const FileUpload = () => {
 
       try {
         setUploading(true);
-        const data = await uploadToS3(file);
+        const newChatId = generateChatId();
+        const data = await uploadToS3(newChatId, file);
         console.log("meow", data);
         if (!data?.file_key || !data.file_name) {
           toast.error("Something went wrong");
           return;
         }
+        
+        // check if chatId is a string
+        if (typeof data.chatId !== "string") {
+          console.log("MUST BE A DAM STRING");
+         
+        }
+        incrementCounter();
         mutate(data, {
-          onSuccess: ({ chat_id }) => {
+          onSuccess: () => {
             toast.success("Chat created!");
-            // router.push(`/chat/${chat_id}`);
+            console.log(newChatId);
+            router.push(`/chat/${newChatId}`);
           },
           onError: (err) => {
             toast.error("Error creating chat");

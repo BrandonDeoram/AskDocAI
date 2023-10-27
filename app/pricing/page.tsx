@@ -1,5 +1,4 @@
 "use client";
-import Navbar from "@/components/navbar";
 import Wrap from "@/components/wrap";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
@@ -22,24 +21,27 @@ const Page = (props: Props) => {
     {
       title: "Pro Plan",
       price: "$19.99/month",
-      features: ["- 25 pages per week", "- 10 MB file", "- Higher Quality Responses"],
+      features: [
+        "- 25 pages per week",
+        "- 10 MB file",
+        "- Higher Quality Responses",
+      ],
     },
   ];
   return (
     <>
-      <Navbar></Navbar>
       <Wrap>
-        <div className="mx-auto p-8 flex flex-col items-center">
+        <div className="mx-auto p-8 flex flex-col items-center ">
           <h1 className="text-2xl sm:text-3xl font-semibold text-center mb-2 sm:mb-8 text-white">
             Pricing
           </h1>
           <Separator className="bg-muted-foreground"></Separator>
-          <section className="flex  flex-wrap justify-center dark border">
+          <section className="flex  flex-wrap justify-center border">
             {plans.map((plan, index) => (
               <div
                 key={index}
                 className={
-                  "relative rounded-lg shadow-md sm:h-[40rem] p-6 m-4 w-full h-80 sm:w-4/5 md:w-96 dark bg-border flex flex-col"
+                  "relative rounded-lg shadow-md sm:h-[40rem] p-6 m-4 w-full h-80 sm:w-4/5 md:w-96 bg-gray-900 flex flex-col"
                 }
               >
                 <div>
