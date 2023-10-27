@@ -60,13 +60,11 @@ const Dashboard = () => {
                 <Button
                   variant={"secondary"}
                   className="mt-2"
-                  onClick={async () => {
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    
+                    
                     await deleteFromS3(index.Key as string);
-                    console.log("hola");
-                    toast("File Deleted");
-                    toast.error("File Deleted");
-                    toast.info("id");
-                    console.log("file deleted");
                     incrementCounter();
                   }}
                 >

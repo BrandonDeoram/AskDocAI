@@ -21,7 +21,7 @@ export async function POST(req: Request, res: Response) {
       console.log("MUST BE A DAM STRING");
       throw new Error("chatId must be a string");
     }
-    await loadS3IntoPinecone(file_key);
+    // await loadS3IntoPinecone(file_key);
 
     // Ensure that chatId is treated as a string
     const chat_id = await db.insert(chats).values({
